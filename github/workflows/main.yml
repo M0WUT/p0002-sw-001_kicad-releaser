@@ -17,9 +17,9 @@ jobs:
           cd
 
           git clone --depth 1 ${{ github.server_url }}/${{ github.repository }} checkout
-          git clone --depth 1 https://github.com/M0WUT/kicad_libraries.git wut-libraries
+          git clone --depth 1 https://github.com/M0WUT/p0002-lib-001_kicad-component-library.git wut-libraries
           git clone --depth 1 https://github.com/openscopeproject/InteractiveHtmlBom.git ibom
-          git clone --depth 1 https://github.com/M0WUT/kicad_releaser.git kicad_releaser
+          git clone --depth 1 https://github.com/M0WUT/p0002-sw-001_kicad-releaser.git kicad_releaser
           # git clone --depth 1 https://gitlab.com/kicad/libraries/kicad-packages3D.git /usr/share/kicad/3dmodels
           pip install --break-system-packages -r kicad_releaser/requirements.txt
 
