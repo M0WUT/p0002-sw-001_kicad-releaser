@@ -1,0 +1,9 @@
+lxml
+mistune
+pypdf
+GitPython
+markdown2>=2.4
+requests
+wxpython
+tqdm
+git+https://github.com/yaqwsx/kikit
