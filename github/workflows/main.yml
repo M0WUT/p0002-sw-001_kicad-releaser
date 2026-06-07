@@ -9,33 +9,40 @@ jobs:
       image: kicad/kicad:10.0-full
       options: --user root
     steps:
+      - name: Install Arial font
+        run: |
+          sed -i 's/Components: main/Components: main contrib non-free non-free-firmware/' /etc/apt/sources.list.d/debian.sources
+          apt-get update
+          apt-get install -y \
+            cabextract \
+            xfonts-utils \
+            fontconfig
+          echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --reinstall \
+            ttf-mscorefonts-installer
+          fc-cache -f -v
+          
       - name: Everything
         run: |
           apt update
-          apt install -y python3-pip protobuf-compiler xvfb tree
+          apt install -y python3-pip protobuf-compiler xvfb
           HOME=/home/kicad/
           cd
 
           git clone --depth 1 ${{ github.server_url }}/${{ github.repository }} checkout
-          git clone --depth 1 https://github.com/M0WUT/p0002-lib-001_kicad-component-library.git wut-libraries
+          git clone --depth 1 https://github.com/M0WUT/kicad_libraries.git wut-libraries
           git clone --depth 1 https://github.com/openscopeproject/InteractiveHtmlBom.git ibom
-          git clone --depth 1 https://github.com/M0WUT/p0002-sw-001_kicad-releaser.git kicad_releaser
+          git clone --depth 1 https://github.com/M0WUT/kicad_releaser.git kicad_releaser
           # git clone --depth 1 https://gitlab.com/kicad/libraries/kicad-packages3D.git /usr/share/kicad/3dmodels
           pip install --break-system-packages -r kicad_releaser/requirements.txt
 
           mkdir build
           chmod 777 build
 
-          # kicad-cli version
-          # rm -r .config/kicad/8.99/*
-          # cp -r kicad_releaser/kicad_settings/* .config/kicad/8.99
-          # sed -i "s#PATH_TO_WUT_LIBRARIES#$(readlink -f wut-libraries)#" .config/kicad/8.99/kicad_common.json
-
           cd checkout
           Xvfb :1 &
           export DISPLAY=:1
-          python3 ../kicad_releaser/releaser.py . ../build ${{secrets.MOUSER_API_KEY}} ${{secrets.FARNELL_API_KEY}}
-          # tree ../build
+          python3 ../kicad_releaser/releaser.py . ../build ../wut-libraries ${{secrets.MOUSER_API_KEY}} ${{secrets.FARNELL_API_KEY}}
           
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
