@@ -359,18 +359,18 @@ if __name__ == "__main__":
     except IndexError:
         farnell_key = None
 
-    # main(
-    #     top_level_folder=Path(sys.argv[1]),
-    #     release_folder=Path(sys.argv[2]),
-    #     mouser_key=mouser_key,
-    #     farnell_key=farnell_key,
-    # )
-
     main(
-        top_level_folder=Path(
-            "C:\\Users\\Dan\\Documents\\Projects\\P0001_TestProject\\hardware\\P0001-001_TestBoard"
-        ),
-        release_folder=Path("temp"),
+        top_level_folder=Path(sys.argv[1]),
+        release_folder=Path(sys.argv[2]),
         mouser_key=mouser_key,
         farnell_key=farnell_key,
     )
+
+    # main(
+    #     top_level_folder=Path(
+    #         "C:\\Users\\Dan\\Documents\\Projects\\P0001_TestProject\\hardware\\P0001-001_TestBoard"
+    #     ),
+    #     release_folder=Path("temp"),
+    #     mouser_key=mouser_key,
+    #     farnell_key=farnell_key,
+    # )
