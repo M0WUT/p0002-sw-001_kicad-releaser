@@ -133,8 +133,14 @@ class ComponentAvailabilitySearcher:
 
                 # This list is already sorted
                 for supplier in self.suppliers:
-
-                    available_quantity = supplier.supplier_api.query_stock_quantity(mpn)
+                    try:
+                        available_quantity = supplier.supplier_api.query_stock_quantity(
+                            mpn
+                        )
+                    except Exception as e:
+                        # Generic catch all to stop the script from halting on every error
+                        print(e)
+                        available_quantity = -1
                     if available_quantity > needed_quantity:
                         availability_str += "| ✅ "
                         if added_to_bom is False:
